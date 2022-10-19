@@ -1,12 +1,15 @@
 import { Button, Label, TextInput } from "flowbite-react";
 import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/UserContext";
 
 const Login = () => {
   const [validation, setValidation] = useState(null);
   const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
+
   const handleSubmitLogin = (event) => {
     event.preventDefault();
     const form = event.target;
@@ -18,7 +21,7 @@ const Login = () => {
         const user = result.user;
         console.log(user);
         form.reset();
-        navigate("/");
+        navigate(from, { replace: true });
       })
       .catch((error) => {
         const authError = error.message;
